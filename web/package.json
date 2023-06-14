@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next dev -p 8080",
-    "build": "next build"
+    "build": "next build",
+    "start": "next start"
   },
   "keywords": [],
   "author": "ahyo.haryanto@gmail.com",
