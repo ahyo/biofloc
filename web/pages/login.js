@@ -25,7 +25,7 @@ const Login = ({onLogin}) => {
       // console.log(token);
       localStorage.setItem('token', token); // Simpan token dalam penyimpanan lokal
       // console.log('token:',token);
-      // onLogin(token);
+      onLogin(token);
       // Redirect ke halaman index
       // console.log('redirect');
       router.push('/');
