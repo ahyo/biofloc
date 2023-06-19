@@ -21,16 +21,16 @@ import {
 import Link from "next/link";
 
 const DataList = () => {
-  const [buyers, setBuyers] = useState([]);
+  const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
-    fetchBuyers(currentPage);
+    fetchUsers(currentPage);
   }, [currentPage]);
 
-  const fetchBuyers = async (page) => {
+  const fetchUsers = async (page) => {
     const token = localStorage.getItem("token");
     try {
       const header = {
@@ -38,18 +38,14 @@ const DataList = () => {
           Authorization: `Bearer ${token}`,
         },
       };
-      //   console.log(header);
       const response = await axios.get(
-        `${config.API_URL}/api/buyers?page=${page}`,
+        `${config.API_URL}/api/users?page=${page}`,
         header
       );
-      // console.log(response);
-      // return;
       if (response.status == 200) {
         const { data } = response;
-        setBuyers(data.buyers);
+        setUsers(data.users);
         setTotalPages(data.totalPages);
-        // console.log(buyers);
       } else {
         console.error("Terjadi kesalahan saat mengambil data pembeli");
       }
@@ -94,7 +90,7 @@ const DataList = () => {
     );
     if (confirmDelete) {
       axios
-        .delete(`${config.API_URL}/api/buyers/${id}`, header)
+        .delete(`${config.API_URL}/api/users/${id}`, header)
         .then((response) => {
           // Hapus item dari tabel atau lakukan aksi lain yang diperlukan
           console.log("Data berhasil dihapus");
@@ -114,8 +110,8 @@ const DataList = () => {
           alignItems: "center",
         }}
       >
-        <h3>List Buyers</h3>
-        <Button variant="primary" onClick={() => router.push("/buyers/add")}>
+        <h3>List Users</h3>
+        <Button variant="primary" onClick={() => router.push("/users/add")}>
           <BsFillPlusCircleFill /> Tambah
         </Button>
       </div>
@@ -126,25 +122,25 @@ const DataList = () => {
             <th>#</th>
             <th>Username</th>
             <th>Email</th>
-            <th>Registration Number</th>
+            <th>Is Admin</th>
             <th className="text-center">Action</th>
           </tr>
         </thead>
         <tbody>
-          {buyers.map((buyer, index) => (
+          {users.map((user, index) => (
             <tr key={index}>
               <td className="text-center">
                 {index + 1 * (currentPage * 10 - 9)}
               </td>
-              <td>{buyer.username}</td>
-              <td>{buyer.email}</td>
-              <td>{buyer.registrationNumber}</td>
+              <td>{user.username}</td>
+              <td>{user.email}</td>
+              <td>{user.isAdmin}</td>
               <td className="text-center">
-                <Link href={`/buyers/${buyer._id}`}>
+                <Link href={`/buyers/${user._id}`}>
                   <BsPencil />
                 </Link>
                 &nbsp;
-                <Link href="" onClick={() => handleDelete(buyer._id)}>
+                <Link href="" onClick={() => handleDelete(user._id)}>
                   <BsTrash />
                 </Link>
               </td>

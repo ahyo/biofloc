@@ -4,4 +4,13 @@
 
 .input {
     border: 1px solid #eee;
+    background-color: beige;
+}
+
+.login_box {
+    background-color: #fff;
+}
+
+.visually-hidden {
+    display: none;
 }

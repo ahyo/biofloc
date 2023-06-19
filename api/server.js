@@ -19,6 +19,9 @@ app.use(authRoutes);
 const buyerRoutes = require('./routes/buyers');
 app.use(buyerRoutes);
 
+const userRoutes = require('./routes/users');
+app.use(userRoutes);
+
 // Impor dan gunakan fungsi koneksi database
 const connectDB = require('./config/db');
 connectDB().then(() => {

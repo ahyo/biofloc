@@ -1,19 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import config from '../config';
+import { Alert } from 'react-bootstrap';
+import { useDispatch,connect } from 'react-redux';
+import { loginAction } from '../actions';
 import { useRouter } from 'next/router';
 
-const Login = ({onLogin}) => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setLoading] = useState(false);
-  const router = useRouter();
+  const dispatch = useDispatch();
+  const router = useRouter()
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    // console.log(username);
-    // console.log(password);
     try {
       setLoading(true);
       const response = await axios.post(`${config.API_URL}/login`, {
@@ -22,14 +24,10 @@ const Login = ({onLogin}) => {
       });
 
       const { token } = response.data; // Ambil token dari respons
-      // console.log(token);
-      localStorage.setItem('token', token); // Simpan token dalam penyimpanan lokal
-      // console.log('token:',token);
-      onLogin(token);
-      // Redirect ke halaman index
-      // console.log('redirect');
-      router.push('/');
-      // setError('token:'.token);
+      
+      dispatch(loginAction(token));
+
+      router.push('/dashboard');
 
     } catch (error) {
         setError('Invalid Username or Password:');
@@ -39,7 +37,7 @@ const Login = ({onLogin}) => {
   };
 
   return (
-    <div className="container">
+    <div className="login_box">
       <div className="row justify-content-center">
         <div className="col-lg-5">
           <div className="card border-0 shadow-lg">
@@ -47,7 +45,7 @@ const Login = ({onLogin}) => {
               <div className="row">
                 <div className="col-lg-12 p-5">
                   <h4 className="mb-4">Login</h4>
-                  {error && <div className="alert alert-danger">{error}</div>} {/* Tampilkan badge error */}
+                  {error && <Alert className='warning'>{error}</Alert>} {/* Tampilkan badge error */}
                   <form onSubmit={handleLogin}>
                     <div className="form-group">
                       <input
@@ -85,5 +83,6 @@ const Login = ({onLogin}) => {
     </div>
   );
 };
+
 
 export default Login;

@@ -1,26 +1,19 @@
-import React from "react";
-import { useRouter } from "next/router";
-import {Nav, Navbar, Container, NavDropdown} from 'react-bootstrap';  
+import React, { useRef } from "react";
+import { useEffect, useRouter } from "next/router";
+import { Nav, Navbar, Container, NavDropdown, Button } from "react-bootstrap";
+import BarChart from "./chart";
 
-const Dashboard = ({ onLogout }) => {
+const Dashboard = () => {
   const router = useRouter();
 
-  const handleLogout = () => {
-    // Logika untuk melakukan logout
-    // ...
-
-    // Hapus token dari penyimpanan lokal (localStorage)
-    localStorage.removeItem("token");
-
-    // Panggil fungsi onLogout ketika logout berhasil
-    onLogout();
-
-    // Redirect ke halaman login setelah logout
-    router.push("/login");
+  const data = {
+    /* data chart */
   };
-  return (  
-    <h1>Dashboard</h1> 
-  );  
+  return (
+    <Container>
+      <BarChart data={data} />
+    </Container>
+  );
 };
 
 export default Dashboard;

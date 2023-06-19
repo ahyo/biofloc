@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Alert,
   Breadcrumb,
   Button,
   Container,
@@ -17,12 +18,18 @@ import { BsListColumns } from "react-icons/bs";
 const CreateForm = () => {
   const router = useRouter();
   const [error, setError] = useState("");
+  const [yesNo, setYesNo] = useState("");
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     email: "",
-    registrationNumber: "",
+    isAdmin: "",
   });
+
+  const handleYesNoChange = (event) => {
+    setYesNo(event.target.value);
+  };
 
   const handleInputChange = (e) => {
     setFormData({
@@ -35,7 +42,7 @@ const CreateForm = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${config.API_URL}/api/buyers`, {
+      const response = await fetch(`${config.API_URL}/api/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,7 +53,7 @@ const CreateForm = () => {
       if (response.ok) {
         // Proses berhasil
         // console.log("Data berhasil dibuat");
-        router.push("/buyers");
+        router.push("/users");
       } else {
         // Proses gagal
         setError("Terjadi kesalahan saat membuat data");
@@ -65,14 +72,14 @@ const CreateForm = () => {
           alignItems: "center",
         }}
       >
-        <h3>Add Buyer</h3>
-        <Button variant="primary" onClick={() => router.push("/buyers")}>
-          <BsListColumns /> List Buyers
+        <h3>Add User</h3>
+        <Button variant="primary" onClick={() => router.push("/users")}>
+          <BsListColumns /> List Users
         </Button>
       </div>
-      <hr/>
+      <hr />
       <Form onSubmit={handleSubmit} className="container mt-3 mb-3">
-        {error && <div className="alert alert-danger">{error}</div>}{" "}
+        {error && <Alert variant="warning">{error}</Alert>}{" "}
         {/* Tampilkan badge error */}
         <Row className="mb-3">
           <FormGroup className="col col-sm-6">
@@ -112,17 +119,28 @@ const CreateForm = () => {
         </Row>
         <Row className="mb-3">
           <FormGroup className="col col-sm-6">
-            <FormLabel>Registration Number</FormLabel>
-            <FormControl
-              type="text"
-              id="registrationNumber"
-              name="registrationNumber"
-              value={formData.registrationNumber}
-              onChange={handleInputChange}
-            ></FormControl>
+            <FormLabel>Is Admin</FormLabel>
+            <div class="form-check form-check-inline">
+              <Form.Check
+                type="radio"
+                name="isAdmin"
+                value="Yes"
+                label="Yes"
+                checked={yesNo === "Yes"}
+                onChange={handleYesNoChange}
+              />
+              <Form.Check
+                type="radio"
+                name="isAdmin"
+                value="No"
+                label="No"
+                checked={yesNo === "No"}
+                onChange={handleYesNoChange}
+              />
+            </div>
           </FormGroup>
         </Row>
-        <Button type="submit">Add New Buyer</Button>
+        <Button type="submit">Add New User</Button>
       </Form>
     </div>
   );
